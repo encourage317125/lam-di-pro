@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+    <config name="php_version" value="80000"/>
+
+    <arg name="basepath" value="."/>
+    <arg name="cache" value=".phpcs-cache"/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="80"/>
+
+    <!-- Show progress -->
+    <arg value="p"/>
+
+    <!--
+        Don't make it bail at the file level deprecation of AbstactInjection (Intented side effect).
+
+        The inline ignores phpcs:disable or @codingStandardsIgnoreStart (as documented on
+        https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#ignoring-parts-of-a-filework)
+        do NOT work, phpcs still errors. This is the only way to fix it.
+    -->
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <exclude-pattern>src/Resolver/AbstractInjection.php</exclude-pattern>
+    </rule>
+
+    <!-- Paths to check -->
+    <file>src</file>
+    <file>test</file>
+
+    <exclude-pattern><![CDATA[*/test/_files/*]]></exclude-pattern>
+    <!-- Excluded since phpcs does not yet provide intersection types -->
+    <exclude-pattern>test/TestAsset/Constructor/IntersectionTypeConstructorDependency.php</exclude-pattern>
+    <rule ref="LaminasCodingStandard"/>
+</ruleset>
